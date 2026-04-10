@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Padel Rota – Nexo Padel Blackburn</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #1a9e6e;
+    --green-dark: #0f6e4e;
+    --green-light: #e0f5ed;
+    --amber: #f5a623;
+    --gray-light: #f3f4f6;
+    --white: #fff;
+    --text: #111827;
+    --text-muted: #6b7280;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: #f0faf5; min-height: 100vh; padding: 0 0 60px; color: var(--text); }
+
+  header { background: var(--green-dark); padding: 28px 20px 22px; text-align: center; position: relative; overflow: hidden; }
+  header::before { content: ''; position: absolute; top: -40px; right: -40px; width: 160px; height: 160px; border-radius: 50%; background: rgba(255,255,255,0.05); }
+  header::after  { content: ''; position: absolute; bottom: -60px; left: -30px; width: 200px; height: 200px; border-radius: 50%; background: rgba(255,255,255,0.04); }
+  .header-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; color: #9fe1cb; text-transform: uppercase; margin-bottom: 6px; }
+  .header-title { font-family: 'Bebas Neue', sans-serif; font-size: 42px; color: #fff; line-height: 1; letter-spacing: 0.02em; }
+  .header-title span { color: var(--amber); }
+  .header-sub { font-size: 13px; color: #9fe1cb; margin-top: 6px; }
+  .book-btn { display: inline-flex; align-items: center; gap: 7px; margin-top: 18px; background: var(--amber); color: #7a3e00; font-size: 14px; font-weight: 600; padding: 11px 22px; border-radius: 100px; text-decoration: none; }
+
+  .rule-strip { background: var(--green); padding: 10px 20px; display: flex; justify-content: center; gap: 18px; flex-wrap: wrap; }
+  .rule-pill { font-size: 11px; font-weight: 600; color: #e0f5ed; letter-spacing: 0.04em; display: flex; align-items: center; gap: 5px; }
+  .rule-pill::before { content: ''; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #9fe1cb; }
+
+  .container { max-width: 520px; margin: 0 auto; padding: 16px 16px 0; }
+
+  .setup-banner { background: #fff8ed; border: 1.5px solid #f5c97a; border-radius: var(--radius); padding: 14px 16px; margin-bottom: 16px; }
+  .setup-banner h3 { font-size: 14px; font-weight: 600; color: #7a3e00; margin-bottom: 6px; }
+  .setup-banner p { font-size: 13px; color: #92600a; line-height: 1.5; }
+  .setup-banner input { width: 100%; margin-top: 8px; padding: 9px 12px; border: 1px solid #f5c97a; border-radius: 8px; font-size: 13px; font-family: 'DM Sans', sans-serif; background: #fff; color: var(--text); }
+  .setup-banner button { margin-top: 8px; width: 100%; padding: 9px; background: var(--amber); color: #7a3e00; font-size: 13px; font-weight: 600; border: none; border-radius: 8px; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+  .setup-banner button:active { opacity: 0.85; }
+
+  .nav-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .nav-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; color: var(--green-dark); text-transform: uppercase; }
+  .nav-btns { display: flex; gap: 6px; }
+  .nav-btn { display: flex; align-items: center; gap: 4px; padding: 6px 11px; border-radius: 100px; border: 1.5px solid #d1fae5; background: #fff; font-size: 12px; font-weight: 600; color: var(--green-dark); cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.15s; }
+  .nav-btn:hover { background: var(--green-light); }
+  .nav-btn:active { transform: scale(0.97); }
+  .nav-btn:disabled { opacity: 0.3; cursor: default; transform: none; }
+  .nav-btn svg { width: 13px; height: 13px; }
+  .today-btn { background: var(--green); color: #fff; border-color: var(--green); font-size: 11px; }
+  .today-btn:hover { background: var(--green-dark); }
+
+  .week-card { background: var(--white); border-radius: var(--radius); margin-bottom: 10px; border: 1.5px solid transparent; overflow: hidden; animation: fadeUp 0.3s ease both; }
+  .week-card.this-week { border-color: var(--amber); }
+  .week-card.past { opacity: 0.6; }
+  .week-card:nth-child(1) { animation-delay: 0.03s; }
+  .week-card:nth-child(2) { animation-delay: 0.07s; }
+  .week-card:nth-child(3) { animation-delay: 0.11s; }
+  .week-card:nth-child(4) { animation-delay: 0.15s; }
+  .week-card:nth-child(5) { animation-delay: 0.19s; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+  .week-inner { display: flex; align-items: stretch; }
+  .week-left { padding: 14px 12px; display: flex; flex-direction: column; justify-content: center; align-items: center; min-width: 66px; border-right: 1px solid #f0f0f0; background: #fafafa; }
+  .week-number { font-family: 'Bebas Neue', sans-serif; font-size: 30px; color: var(--green); line-height: 1; }
+  .week-date-str { font-size: 11px; font-weight: 500; color: var(--text-muted); margin-top: 3px; text-align: center; line-height: 1.4; }
+  .week-middle { flex: 1; padding: 12px 14px; display: flex; flex-direction: column; justify-content: center; gap: 6px; }
+
+  .badge { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 100px; letter-spacing: 0.05em; text-transform: uppercase; display: inline-block; margin-bottom: 1px; }
+  .badge-now    { background: var(--amber); color: #7a3e00; }
+  .badge-past   { background: var(--gray-light); color: var(--text-muted); }
+  .badge-future { background: var(--green-light); color: var(--green-dark); }
+
+  .players-row { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+  .row-label { font-size: 10px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.07em; text-transform: uppercase; min-width: 30px; }
+
+  .chip { font-size: 12px; font-weight: 500; padding: 4px 10px; border-radius: 100px; cursor: default; display: inline-flex; align-items: center; gap: 4px; transition: opacity 0.15s; }
+  .chip-anchor { background: #fff4e0; color: #7a3e00; border: 1px solid #f5c97a; }
+  .chip-pay    { background: var(--green-light); color: var(--green-dark); }
+  .chip-free   { background: var(--gray-light); color: var(--text-muted); }
+  .chip-paid   { background: var(--green); color: #fff; }
+  .chip-unpaid { background: #fdecea; color: #a32d2d; border: 1px solid #f09595; }
+  .chip.tappable { cursor: pointer; }
+  .chip.tappable:active { opacity: 0.7; }
+
+  .pay-progress { font-size: 11px; color: var(--text-muted); }
+  .pay-progress span { font-weight: 600; color: var(--green-dark); }
+
+  .week-right { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 12px 14px; border-left: 1px solid #f0f0f0; text-decoration: none; background: #fafafa; gap: 5px; min-width: 64px; transition: background 0.15s; }
+  .week-right:active { background: #e8f5ef; }
+  .week-right-icon { width: 34px; height: 34px; background: var(--green); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .week-right-icon svg { width: 16px; height: 16px; }
+  .week-right-label { font-size: 9px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.06em; text-transform: uppercase; text-align: center; }
+
+  .legend { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin: 14px 0 4px; }
+  .leg { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text-muted); }
+  .leg-dot { width: 9px; height: 9px; border-radius: 50%; }
+  .leg-sq  { width: 9px; height: 9px; border-radius: 2px; border: 1px solid #f5c97a; background: #fff4e0; }
+
+  .sync-status { font-size: 11px; color: var(--text-muted); text-align: center; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 5px; }
+  .status-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+
+  .book-footer { margin: 16px 0 0; background: var(--green-dark); border-radius: var(--radius); padding: 18px 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; text-decoration: none; }
+  .book-footer:active { opacity: 0.85; }
+  .bfl-label { font-size: 11px; color: #9fe1cb; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 2px; }
+  .bfl-name  { font-size: 16px; font-weight: 600; color: #fff; }
+  .book-footer-arrow { width: 38px; height: 38px; border-radius: 50%; background: var(--amber); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .book-footer-arrow svg { width: 18px; height: 18px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-eyebrow">Nexo Padel · Blackburn</div>
+  <div class="header-title">Padel <span>Rota</span></div>
+  <div class="header-sub">Shane or Peanut always book · 4 pay each week</div>
+  <a class="book-btn" href="https://playtomic.com/clubs/nexo-padel" target="_blank">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+    Book on Playtomic
+  </a>
+</header>
+
+<div class="rule-strip">
+  <div class="rule-pill">Shane or Peanut book every week</div>
+  <div class="rule-pill">Always 4 pay</div>
+  <div class="rule-pill">No 3 weeks in a row</div>
+</div>
+
+<div class="container">
+
+  <div class="setup-banner" id="setup-banner">
+    <h3>One-time setup (Shane only)</h3>
+    <p>Create a free bin at <strong>jsonbin.io</strong> → New Bin → paste the 52-week JSON → copy the Bin ID and API key below.</p>
+    <input type="text" id="bin-id-input" placeholder="JSONBin Bin ID..." />
+    <input type="text" id="api-key-input" placeholder="JSONBin API key..." />
+    <button onclick="saveKeys()">Save &amp; connect</button>
+  </div>
+
+  <div class="nav-bar">
+    <div class="nav-label" id="nav-label"></div>
+    <div class="nav-btns">
+      <button class="nav-btn" id="prev-btn" onclick="navigate(-1)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>Previous
+      </button>
+      <button class="nav-btn today-btn" onclick="goToToday()">Today</button>
+      <button class="nav-btn" id="next-btn" onclick="navigate(1)">Next
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div id="weeks"></div>
+
+  <div class="legend">
+    <div class="leg"><div class="leg-sq"></div> anchor booker</div>
+    <div class="leg"><div class="leg-dot" style="background:#1a9e6e;"></div> paying</div>
+    <div class="leg"><div class="leg-dot" style="background:#1a9e6e;"></div> paid ✓</div>
+    <div class="leg"><div class="leg-dot" style="background:#f09595;"></div> not paid</div>
+    <div class="leg"><div class="leg-dot" style="background:#d1d5db;"></div> free</div>
+  </div>
+
+  <div class="sync-status" id="sync-status"></div>
+
+  <a class="book-footer" href="https://playtomic.com/clubs/nexo-padel" target="_blank">
+    <div>
+      <div class="bfl-label">Book your court</div>
+      <div class="bfl-name">Nexo Padel on Playtomic</div>
+    </div>
+    <div class="book-footer-arrow">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#7a3e00" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </div>
+  </a>
+</div>
+
+<script>
+const TOTAL = 52, PAGE = 5;
+const allPlayers = ['Shane','Muhsin','Gits','Hassy','Ikyan','Peanut'];
+const anchors    = ['Shane','Peanut'];
+const MAIN_BOOKER = 'Shane';
+
+function debt(p) { return p.played - p.paid; }
+
+function pickPayers(state) {
+  const aPool = [...state].filter(p => anchors.includes(p.name)).sort((a,b) => {
+    const aB=a.consecutive>=2, bB=b.consecutive>=2;
+    if (aB&&!bB) return 1; if (bB&&!aB) return -1;
+    return debt(b)-debt(a)||a.lastPaid-b.lastPaid;
+  });
+  const chosen = aPool[0].name;
+  const rest = state.filter(p=>p.name!==chosen);
+  const elig = rest.filter(p=>p.consecutive<2).sort((a,b)=>debt(b)-debt(a)||a.lastPaid-b.lastPaid);
+  const over = rest.filter(p=>p.consecutive>=2).sort((a,b)=>debt(b)-debt(a)||a.lastPaid-b.lastPaid);
+  const fillers = [...elig,...over].slice(0,3).map(p=>p.name);
+  let payers = [chosen,...fillers];
+  if (payers.includes(MAIN_BOOKER)&&payers[0]!==MAIN_BOOKER)
+    payers = [MAIN_BOOKER,...payers.filter(p=>p!==MAIN_BOOKER)];
+  return payers;
+}
+
+function buildSchedule() {
+  const state = [
+    {name:'Shane', played:2,paid:2,lastPaid:1,consecutive:0},
+    {name:'Muhsin',played:2,paid:2,lastPaid:1,consecutive:0},
+    {name:'Gits',  played:2,paid:1,lastPaid:0,consecutive:0},
+    {name:'Hassy', played:2,paid:1,lastPaid:0,consecutive:0},
+    {name:'Ikyan', played:2,paid:1,lastPaid:0,consecutive:0},
+    {name:'Peanut',played:2,paid:1,lastPaid:0,consecutive:0},
+  ];
+  [['Gits','Hassy','Ikyan','Peanut'],['Shane','Muhsin','Gits','Hassy']].forEach((py,w)=>{
+    state.forEach(p=>{p.played++;if(py.includes(p.name)){p.paid++;p.lastPaid=w;p.consecutive++;}else p.consecutive=0;});
+  });
+  const s=[];
+  for(let w=0;w<TOTAL;w++){
+    const py=pickPayers(state);s.push(py);
+    state.forEach(p=>{p.played++;if(py.includes(p.name)){p.paid++;p.lastPaid=w+2;p.consecutive++;}else p.consecutive=0;});
+  }
+  return s;
+}
+
+const schedule = buildSchedule();
+
+function weekDate(i) {
+  const d = new Date('2026-04-14');
+  d.setDate(d.getDate()+i*7);
+  return {
+    short: d.toLocaleDateString('en-GB',{day:'numeric',month:'short'}),
+    dow:   d.toLocaleDateString('en-GB',{weekday:'short'}),
+    start: new Date(d),
+    end:   new Date(d.getTime()+7*86400000),
+  };
+}
+
+function getCurrentWeekIndex() {
+  const today = new Date();
+  for(let i=0;i<TOTAL;i++){const{start,end}=weekDate(i);if(today>=start&&today<end)return i;}
+  return 0;
+}
+
+let currentPage = Math.floor(getCurrentWeekIndex()/PAGE);
+
+function navigate(dir) {
+  const max = Math.floor((TOTAL-1)/PAGE);
+  currentPage = Math.max(0,Math.min(max,currentPage+dir));
+  renderWeeks();
+}
+function goToToday() { currentPage=Math.floor(getCurrentWeekIndex()/PAGE); renderWeeks(); }
+
+let BIN_ID  = localStorage.getItem('padel_bin_id')||'';
+let API_KEY = localStorage.getItem('padel_api_key')||'';
+let paidData = {};
+
+function saveKeys() {
+  BIN_ID  = document.getElementById('bin-id-input').value.trim();
+  API_KEY = document.getElementById('api-key-input').value.trim();
+  if(!BIN_ID||!API_KEY){alert('Please enter both fields.');return;}
+  localStorage.setItem('padel_bin_id',BIN_ID);
+  localStorage.setItem('padel_api_key',API_KEY);
+  document.getElementById('setup-banner').style.display='none';
+  fetchPaidData();
+}
+if(BIN_ID&&API_KEY) document.getElementById('setup-banner').style.display='none';
+
+function setStatus(msg,color){
+  document.getElementById('sync-status').innerHTML=`<span class="status-dot" style="background:${color};"></span>${msg}`;
+}
+
+async function fetchPaidData(){
+  if(!BIN_ID||!API_KEY)return;
+  setStatus('Syncing...','#f5a623');
+  try{
+    const res=await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`,{headers:{'X-Master-Key':API_KEY}});
+    const json=await res.json();
+    paidData=json.record||{};
+    renderWeeks();
+    setStatus('Live · tap a name to mark as paid','#1a9e6e');
+  }catch(e){setStatus('Could not sync — showing offline','#e24b4a');renderWeeks();}
+}
+
+async function savePaidData(){
+  if(!BIN_ID||!API_KEY)return;
+  setStatus('Saving...','#f5a623');
+  try{
+    await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`,{
+      method:'PUT',
+      headers:{'Content-Type':'application/json','X-Master-Key':API_KEY},
+      body:JSON.stringify(paidData),
+    });
+    setStatus('Saved · everyone can see this','#1a9e6e');
+  }catch(e){setStatus('Save failed — try again','#e24b4a');}
+}
+
+function togglePaid(weekKey,name){
+  if(!paidData[weekKey])paidData[weekKey]={};
+  paidData[weekKey][name]=!paidData[weekKey][name];
+  renderWeeks();savePaidData();
+}
+
+function renderWeeks(){
+  const el=document.getElementById('weeks');
+  el.innerHTML='';
+  const today=new Date();
+  const max=Math.floor((TOTAL-1)/PAGE);
+  const start=currentPage*PAGE;
+  const end=Math.min(start+PAGE,TOTAL);
+
+  document.getElementById('prev-btn').disabled=currentPage===0;
+  document.getElementById('next-btn').disabled=currentPage===max;
+  document.getElementById('nav-label').textContent=
+    `Weeks ${start+1}–${end} · ${weekDate(start).short} → ${weekDate(end-1).short}`;
+
+  for(let i=start;i<end;i++){
+    const payers=schedule[i];
+    const free=allPlayers.filter(p=>!payers.includes(p));
+    const {short,dow,start:ws,end:we}=weekDate(i);
+    const isNow=today>=ws&&today<we;
+    const isPast=today>=we;
+    const weekKey=`week_${i}`;
+    const weekPaid=paidData[weekKey]||{};
+    const gameHappened=isPast||isNow;
+
+    const card=document.createElement('div');
+    card.className='week-card'+(isNow?' this-week':'')+(isPast?' past':'');
+
+    const payChips=payers.map(name=>{
+      const isA=anchors.includes(name);
+      const hasPaid=weekPaid[name]===true;
+      const hasNot=weekPaid[name]===false;
+      let cls,label;
+      if(gameHappened){
+        cls=hasPaid?'chip-paid':(hasNot?'chip-unpaid':(isA?'chip-anchor':'chip-pay'));
+        label=hasPaid?`${name} ✓`:name;
+      }else{cls=isA?'chip-anchor':'chip-pay';label=name;}
+      const tap=isNow&&BIN_ID;
+      return `<span class="chip ${cls}${tap?' tappable':''}"${tap?` onclick="togglePaid('${weekKey}','${name}')"`:''}>${label}</span>`;
+    }).join('');
+
+    const freeChips=free.map(p=>`<span class="chip chip-free">${p}</span>`).join('');
+    const paidCount=payers.filter(p=>weekPaid[p]===true).length;
+    const progress=gameHappened?`<div class="pay-progress"><span>${paidCount}/${payers.length}</span> paid</div>`:'';
+    const badge=isNow?'<span class="badge badge-now">This week</span>':isPast?'<span class="badge badge-past">Done</span>':'<span class="badge badge-future">Upcoming</span>';
+
+    card.innerHTML=`
+      <div class="week-inner">
+        <div class="week-left">
+          <div class="week-number">${String(i+1).padStart(2,'0')}</div>
+          <div class="week-date-str">${dow}<br>${short}</div>
+        </div>
+        <div class="week-middle">
+          ${badge}
+          <div class="players-row"><span class="row-label">Pay</span>${payChips}</div>
+          ${progress}
+          <div class="players-row"><span class="row-label">Free</span>${freeChips}</div>
+        </div>
+        <a class="week-right" href="https://playtomic.com/clubs/nexo-padel" target="_blank">
+          <div class="week-right-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </div>
+          <div class="week-right-label">Book</div>
+        </a>
+      </div>`;
+    el.appendChild(card);
+  }
+}
+
+if(BIN_ID&&API_KEY){fetchPaidData();}else{renderWeeks();setStatus('Set up sync above to track payments live','#f5a623');}
+setInterval(()=>{if(BIN_ID&&API_KEY)fetchPaidData();},30000);
+</script>
+</body>
+</html>
