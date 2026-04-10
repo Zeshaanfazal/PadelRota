@@ -227,10 +227,10 @@ function buildSchedule(){
     {name:'Muhsin',played:2,paid:2,lastPaid:1,consecutive:0},
     {name:'Gits',  played:2,paid:1,lastPaid:0,consecutive:0},
     {name:'Hassy', played:2,paid:1,lastPaid:0,consecutive:0},
-    {name:'Ikyan', played:2,paid:1,lastPaid:0,consecutive:0},
-    {name:'Peanut',played:2,paid:1,lastPaid:0,consecutive:0},
+    {name:'Ikyan', played:2,paid:1,lastPaid:1,consecutive:0},
+    {name:'Peanut',played:2,paid:1,lastPaid:1,consecutive:0},
   ];
-  [['Gits','Hassy','Ikyan','Peanut'],['Shane','Muhsin','Gits','Hassy']].forEach((py,w)=>{
+  [['Shane','Muhsin','Gits','Hassy'],['Shane','Muhsin','Ikyan','Peanut']].forEach((py,w)=>{
     state.forEach(p=>{p.played++;if(py.includes(p.name)){p.paid++;p.lastPaid=w;p.consecutive++;}else p.consecutive=0;});
   });
   const s=[];
