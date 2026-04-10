@@ -248,19 +248,10 @@ function navigate(dir) {
 }
 function goToToday() { currentPage=Math.floor(getCurrentWeekIndex()/PAGE); renderWeeks(); }
 
-let BIN_ID  = localStorage.getItem('padel_bin_id')||'';
-let API_KEY = localStorage.getItem('padel_api_key')||'';
+let BIN_ID  = '69d8bd4336566621a89a0d46';
+let API_KEY = '$2a$10$wFLqnPrg2qRxOT2SAFps1OCHKfAajD9qY/N1bOgaiIP.qTzMCgVbC';
 let paidData = {};
 
-function saveKeys() {
-  BIN_ID  = document.getElementById('bin-id-input').value.trim();
-  API_KEY = document.getElementById('api-key-input').value.trim();
-  if(!BIN_ID||!API_KEY){alert('Please enter both fields.');return;}
-  localStorage.setItem('padel_bin_id',BIN_ID);
-  localStorage.setItem('padel_api_key',API_KEY);
-  document.getElementById('setup-banner').style.display='none';
-  fetchPaidData();
-}
 if(BIN_ID&&API_KEY) document.getElementById('setup-banner').style.display='none';
 
 function setStatus(msg,color){
