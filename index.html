@@ -78,8 +78,9 @@
   .row-label { font-size: 10px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.07em; text-transform: uppercase; min-width: 30px; }
 
   .chip { font-size: 12px; font-weight: 500; padding: 4px 10px; border-radius: 100px; cursor: default; display: inline-flex; align-items: center; gap: 4px; transition: opacity 0.15s; }
-  .chip-anchor { background: #fff4e0; color: #7a3e00; border: 1px solid #f5c97a; }
+  .chip-anchor { background: var(--green-light); color: var(--green-dark); }
   .chip-pay    { background: var(--green-light); color: var(--green-dark); }
+  .chip-booker { background: var(--green-light); color: var(--green-dark); font-weight: 700; }
   .chip-free   { background: var(--gray-light); color: var(--text-muted); }
   .chip-paid   { background: var(--green); color: #fff; }
   .chip-unpaid { background: #fdecea; color: #a32d2d; border: 1px solid #f09595; }
@@ -155,7 +156,6 @@
   <div id="weeks"></div>
 
   <div class="legend">
-    <div class="leg"><div class="leg-sq"></div> anchor booker</div>
     <div class="leg"><div class="leg-dot" style="background:#1a9e6e;"></div> paying</div>
     <div class="leg"><div class="leg-dot" style="background:#1a9e6e;"></div> paid ✓</div>
     <div class="leg"><div class="leg-dot" style="background:#f09595;"></div> not paid</div>
@@ -317,23 +317,25 @@ function renderWeeks(){
     const {short,dow,start:ws,end:we}=weekDate(i);
     const isNow=today>=ws&&today<we;
     const isPast=today>=we;
+    // Make week tappable from the Monday of that week (ws) or if today is within 6 days before game day (Tuesday)
+    const weekTuesday=new Date(ws);weekTuesday.setDate(ws.getDate()+1);
+    const sixDaysBefore=new Date(weekTuesday);sixDaysBefore.setDate(weekTuesday.getDate()-6);
     const weekKey=`week_${i}`;
     const weekPaid=paidData[weekKey]||{};
     const gameHappened=isPast||isNow;
+    const isActiveWeek=today>=sixDaysBefore&&today<we;
 
     const card=document.createElement('div');
     card.className='week-card'+(isNow?' this-week':'')+(isPast?' past':'');
 
     const payChips=payers.map(name=>{
-      const isA=anchors.includes(name);
-      const hasPaid=weekPaid[name]===true;
-      const hasNot=weekPaid[name]===false;
+      const isBooker = name === payers[0];
       let cls,label;
       if(gameHappened){
-        cls=hasPaid?'chip-paid':(hasNot?'chip-unpaid':(isA?'chip-anchor':'chip-pay'));
+        cls=hasPaid?'chip-paid':(hasNot?'chip-unpaid':(isBooker?'chip-booker':'chip-pay'));
         label=hasPaid?`${name} ✓`:name;
-      }else{cls=isA?'chip-anchor':'chip-pay';label=name;}
-      const tap=isNow&&BIN_ID;
+      }else{cls=isBooker?'chip-booker':'chip-pay';label=name;}
+      const tap=isActiveWeek&&BIN_ID;
       return `<span class="chip ${cls}${tap?' tappable':''}"${tap?` onclick="togglePaid('${weekKey}','${name}')"`:''}>${label}</span>`;
     }).join('');
 
