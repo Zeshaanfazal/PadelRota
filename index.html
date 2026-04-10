@@ -11,7 +11,6 @@
     --green-dark: #0f6e4e;
     --green-light: #e8f8f1;
     --red: #e53e3e;
-    --red-light: #fff5f5;
     --gray-light: #f7f7f7;
     --border: #e8e8e8;
     --white: #fff;
@@ -22,22 +21,27 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'DM Sans', sans-serif; background: #f7faf9; min-height: 100vh; padding: 0 0 60px; color: var(--text); }
 
-  header { background: var(--green-dark); padding: 28px 20px 22px; text-align: center; position: relative; overflow: hidden; }
+  header { background: var(--green-dark); padding: 24px 20px 0; text-align: center; position: relative; overflow: hidden; }
   header::before { content: ''; position: absolute; top: -40px; right: -40px; width: 160px; height: 160px; border-radius: 50%; background: rgba(255,255,255,0.06); }
   header::after  { content: ''; position: absolute; bottom: -60px; left: -30px; width: 200px; height: 200px; border-radius: 50%; background: rgba(255,255,255,0.04); }
   .header-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; color: #9fe1cb; text-transform: uppercase; margin-bottom: 6px; }
   .header-title { font-family: 'Bebas Neue', sans-serif; font-size: 42px; color: #fff; line-height: 1; letter-spacing: 0.02em; }
   .header-title span { color: #9fe1cb; }
-  .header-sub { font-size: 13px; color: #9fe1cb; margin-top: 6px; }
-  .book-btn { display: inline-flex; align-items: center; gap: 7px; margin-top: 18px; background: #fff; color: var(--green-dark); font-size: 14px; font-weight: 600; padding: 10px 22px; border-radius: 100px; text-decoration: none; }
+  .book-btn { display: inline-flex; align-items: center; gap: 7px; margin-top: 14px; background: #fff; color: var(--green-dark); font-size: 13px; font-weight: 600; padding: 9px 20px; border-radius: 100px; text-decoration: none; }
   .book-btn:active { opacity: 0.85; }
+  .tabs { display: flex; margin-top: 16px; }
+  .tab { flex: 1; padding: 11px 8px; font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.55); cursor: pointer; border: none; background: transparent; font-family: 'DM Sans', sans-serif; border-bottom: 3px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .tab.active { color: #fff; border-bottom-color: #9fe1cb; }
 
-  .rule-strip { background: var(--green); padding: 9px 20px; display: flex; justify-content: center; gap: 18px; flex-wrap: wrap; }
+  .rule-strip { background: var(--green); padding: 9px 20px; display: flex; justify-content: center; }
   .rule-pill { font-size: 11px; font-weight: 600; color: #e0f5ed; letter-spacing: 0.04em; display: flex; align-items: center; gap: 5px; }
   .rule-pill::before { content: ''; display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: #9fe1cb; }
 
   .container { max-width: 520px; margin: 0 auto; padding: 16px 14px 0; }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
 
+  /* Nav */
   .nav-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
   .nav-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; color: var(--green-dark); text-transform: uppercase; }
   .nav-btns { display: flex; gap: 6px; }
@@ -47,76 +51,104 @@
   .nav-btn:disabled { opacity: 0.3; cursor: default; transform: none; }
   .nav-btn svg { width: 13px; height: 13px; }
   .today-btn { background: var(--green); color: #fff; border-color: var(--green); font-size: 11px; }
-  .today-btn:hover { background: var(--green-dark); border-color: var(--green-dark); }
+  .today-btn:hover { background: var(--green-dark); }
 
+  /* Week cards */
   .week-card { background: var(--white); border-radius: var(--radius); margin-bottom: 10px; border: 1.5px solid var(--border); overflow: hidden; animation: fadeUp 0.3s ease both; }
   .week-card.this-week { border-color: var(--green); border-width: 2px; }
   .week-card.past { opacity: 0.55; }
-  .week-card:nth-child(1) { animation-delay: 0.03s; }
-  .week-card:nth-child(2) { animation-delay: 0.07s; }
-  .week-card:nth-child(3) { animation-delay: 0.11s; }
-  .week-card:nth-child(4) { animation-delay: 0.15s; }
-  .week-card:nth-child(5) { animation-delay: 0.19s; }
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
+  .week-card:nth-child(1){animation-delay:.03s} .week-card:nth-child(2){animation-delay:.07s} .week-card:nth-child(3){animation-delay:.11s} .week-card:nth-child(4){animation-delay:.15s} .week-card:nth-child(5){animation-delay:.19s}
+  @keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
   .week-inner { display: flex; align-items: stretch; }
   .week-left { padding: 14px 12px; display: flex; flex-direction: column; justify-content: center; align-items: center; min-width: 64px; border-right: 1.5px solid var(--border); background: var(--gray-light); }
   .week-number { font-family: 'Bebas Neue', sans-serif; font-size: 30px; color: var(--green); line-height: 1; }
   .week-date-str { font-size: 11px; font-weight: 500; color: var(--text-muted); margin-top: 3px; text-align: center; line-height: 1.4; }
   .week-middle { flex: 1; padding: 12px 14px; display: flex; flex-direction: column; justify-content: center; gap: 7px; }
-
   .badge { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 100px; letter-spacing: 0.05em; text-transform: uppercase; display: inline-block; margin-bottom: 1px; }
-  .badge-now    { background: var(--green); color: #fff; }
-  .badge-past   { background: var(--gray-light); color: var(--text-muted); border: 1px solid var(--border); }
+  .badge-now { background: var(--green); color: #fff; }
+  .badge-past { background: var(--gray-light); color: var(--text-muted); border: 1px solid var(--border); }
   .badge-future { background: var(--green-light); color: var(--green-dark); }
-
   .players-row { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
   .row-label { font-size: 10px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.07em; text-transform: uppercase; min-width: 30px; }
-
-  .chip { font-size: 12px; font-weight: 500; padding: 5px 11px; border-radius: 100px; cursor: default; display: inline-flex; align-items: center; gap: 4px; transition: transform 0.1s, opacity 0.1s; border: 1.5px solid transparent; }
-  .chip-unpaid  { background: #fff5f5; color: var(--red); border-color: #fecaca; }
+  .chip { font-size: 11px; font-weight: 500; padding: 4px 9px; border-radius: 100px; cursor: default; display: inline-flex; align-items: center; gap: 4px; transition: transform 0.1s, opacity 0.1s; border: 1.5px solid transparent; }
+  .chip-unpaid { background: #fff5f5; color: var(--red); border-color: #fecaca; }
   .chip-unpaid.booker { font-weight: 700; }
-  .chip-paid    { background: var(--green); color: #fff; border-color: var(--green); }
+  .chip-paid { background: var(--green); color: #fff; border-color: var(--green); }
   .chip-paid.booker { font-weight: 700; }
-  .chip-future  { background: #fffbeb; color: #92600a; border-color: #fcd34d; }
+  .chip-future { background: #fffbeb; color: #92600a; border-color: #fcd34d; }
   .chip-future.booker { font-weight: 700; }
-  .chip-free    { background: var(--gray-light); color: var(--text-muted); border-color: var(--border); }
+  .chip-free { background: var(--gray-light); color: var(--text-muted); border-color: var(--border); }
   .chip.tappable { cursor: pointer; }
   .chip.tappable:active { transform: scale(0.94); opacity: 0.8; }
-
   .pay-progress { font-size: 11px; color: var(--text-muted); }
   .pay-progress b { color: var(--green-dark); }
-
-  .week-right { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 12px 12px; border-left: 1.5px solid var(--border); text-decoration: none; background: var(--gray-light); gap: 5px; min-width: 60px; transition: background 0.15s; }
+  .week-right { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 12px; border-left: 1.5px solid var(--border); text-decoration: none; background: var(--gray-light); gap: 5px; min-width: 60px; }
   .week-right:active { background: var(--green-light); }
   .week-right-icon { width: 32px; height: 32px; background: var(--green); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
   .week-right-icon svg { width: 15px; height: 15px; }
   .week-right-label { font-size: 9px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.06em; text-transform: uppercase; text-align: center; }
-
   .legend { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin: 14px 0 4px; }
   .leg { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text-muted); }
   .leg-dot { width: 9px; height: 9px; border-radius: 50%; }
-
-  .sync-status { font-size: 11px; color: var(--text-muted); text-align: center; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 5px; }
-  .status-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
-
   .book-footer { margin: 16px 0 0; background: var(--green-dark); border-radius: var(--radius); padding: 18px 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; text-decoration: none; }
   .book-footer:active { opacity: 0.85; }
   .bfl-label { font-size: 11px; color: #9fe1cb; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 2px; }
-  .bfl-name  { font-size: 16px; font-weight: 600; color: #fff; }
+  .bfl-name { font-size: 16px; font-weight: 600; color: #fff; }
   .book-footer-arrow { width: 38px; height: 38px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .book-footer-arrow svg { width: 18px; height: 18px; }
 
-  /* Modal popup */
-  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: flex-end; justify-content: center; z-index: 100; animation: fadeIn 0.2s ease; }
+  /* Leaderboard */
+  .lb-section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; color: var(--green-dark); text-transform: uppercase; margin: 4px 0 10px; }
+  .lb-card { background: var(--white); border-radius: var(--radius); border: 1.5px solid var(--border); overflow: hidden; margin-bottom: 20px; }
+  .lb-row { display: flex; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--border); gap: 12px; }
+  .lb-row:last-child { border-bottom: none; }
+  .lb-rank { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--text-muted); min-width: 28px; }
+  .lb-rank.gold { color: #d97706; } .lb-rank.silver { color: #9ca3af; } .lb-rank.bronze { color: #b45309; }
+  .lb-name { font-size: 14px; font-weight: 600; flex: 1; }
+  .lb-stats { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+  .lb-ratio { font-size: 15px; font-weight: 700; color: var(--green-dark); }
+  .lb-detail { font-size: 11px; color: var(--text-muted); }
+  .lb-bar-wrap { height: 4px; background: var(--green-light); border-radius: 2px; margin: 0 16px 10px; }
+  .lb-bar { height: 100%; background: var(--green); border-radius: 2px; }
+
+  /* Auth + Log */
+  .auth-card { background: var(--white); border-radius: var(--radius); border: 1.5px solid var(--border); padding: 20px 16px; }
+  .auth-title { font-family: 'Bebas Neue', sans-serif; font-size: 26px; color: var(--green-dark); margin-bottom: 4px; }
+  .auth-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5; }
+  .player-btn { display: block; width: 100%; text-align: left; padding: 13px 16px; margin-bottom: 8px; border: 1.5px solid var(--border); border-radius: 12px; background: #fff; font-size: 15px; font-weight: 600; font-family: 'DM Sans', sans-serif; cursor: pointer; color: var(--text); transition: border-color 0.15s, background 0.15s; }
+  .player-btn:hover { border-color: var(--green); background: var(--green-light); }
+  .pin-dots { display: flex; gap: 12px; justify-content: center; margin-bottom: 20px; }
+  .pin-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--border); background: #fff; transition: background 0.15s, border-color 0.15s; }
+  .pin-dot.filled { background: var(--green); border-color: var(--green); }
+  .numpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+  .num-btn { padding: 16px; border: 1.5px solid var(--border); border-radius: 12px; background: #fff; font-size: 20px; font-weight: 600; font-family: 'DM Sans', sans-serif; cursor: pointer; color: var(--text); transition: background 0.1s; }
+  .num-btn:active { background: var(--green-light); }
+  .num-btn.del { font-size: 16px; color: var(--text-muted); }
+  .num-btn.empty { border: none; background: transparent; cursor: default; }
+  .biometric-btn { width: 100%; padding: 13px; border: 1.5px solid var(--green); border-radius: 12px; background: var(--green-light); color: var(--green-dark); font-size: 14px; font-weight: 600; font-family: 'DM Sans', sans-serif; cursor: pointer; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .biometric-btn:active { opacity: 0.8; }
+  .auth-error { color: var(--red); font-size: 13px; text-align: center; margin-top: 8px; min-height: 20px; }
+  .action-btn { width: 100%; padding: 13px; background: var(--green); color: #fff; border: none; border-radius: 12px; font-size: 14px; font-weight: 600; font-family: 'DM Sans', sans-serif; cursor: pointer; margin-top: 4px; }
+  .action-btn:active { opacity: 0.85; }
+  .log-player-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .log-player-name { font-size: 14px; font-weight: 600; flex: 1; }
+  .log-inputs { display: flex; gap: 8px; }
+  .log-input-wrap { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .log-input-label { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); }
+  .log-input { width: 56px; padding: 8px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 16px; font-weight: 600; text-align: center; font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--gray-light); }
+  .log-input:focus { outline: none; border-color: var(--green); background: #fff; }
+  .success-msg { font-size: 13px; color: var(--green-dark); text-align: center; margin-top: 10px; font-weight: 600; display: none; }
+  .switch-link { font-size: 12px; color: var(--text-muted); text-align: center; margin-top: 12px; cursor: pointer; text-decoration: underline; }
+
+  /* Payment modal */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: flex-end; justify-content: center; z-index: 100; }
   .modal-overlay.hidden { display: none; }
-  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
   .modal { background: #fff; border-radius: 20px 20px 0 0; padding: 24px 20px 36px; width: 100%; max-width: 520px; animation: slideUp 0.25s ease; }
-  @keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  @keyframes slideUp { from{transform:translateY(40px);opacity:0} to{transform:translateY(0);opacity:1} }
   .modal-name { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--green-dark); margin-bottom: 4px; }
   .modal-week { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; }
   .modal-btns { display: flex; flex-direction: column; gap: 10px; }
-  .modal-btn { padding: 14px; border-radius: 12px; border: none; font-size: 15px; font-weight: 600; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: opacity 0.15s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .modal-btn { padding: 14px; border-radius: 12px; border: none; font-size: 15px; font-weight: 600; font-family: 'DM Sans', sans-serif; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
   .modal-btn:active { opacity: 0.8; }
   .modal-btn-paid { background: var(--green); color: #fff; }
   .modal-btn-unpaid { background: #fff5f5; color: var(--red); border: 1.5px solid #fecaca; }
@@ -128,65 +160,68 @@
 <header>
   <div class="header-eyebrow">Nexo Padel · Blackburn</div>
   <div class="header-title">Padel <span>Rota</span></div>
-
   <a class="book-btn" href="https://playtomic.com/clubs/nexo-padel" target="_blank">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
     Book on Playtomic
   </a>
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('rota')">Rota</button>
+    <button class="tab" onclick="switchTab('leaderboard')">Leaderboard</button>
+    <button class="tab" onclick="switchTab('log')">Log Results</button>
+  </div>
 </header>
 
-
-
-<div class="rule-strip">
-  <div class="rule-pill">Reyaans Dad</div>
-</div>
+<div class="rule-strip"><div class="rule-pill">Reyaans Dad</div></div>
 
 <div class="container">
-  <div class="nav-bar">
-    <div class="nav-label" id="nav-label"></div>
-    <div class="nav-btns">
-      <button class="nav-btn" id="prev-btn" onclick="navigate(-1)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>Previous
-      </button>
-      <button class="nav-btn today-btn" onclick="goToToday()">Today</button>
-      <button class="nav-btn" id="next-btn" onclick="navigate(1)">Next
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-      </button>
+
+  <!-- ROTA -->
+  <div class="tab-content active" id="tab-rota">
+    <div class="nav-bar">
+      <div class="nav-label" id="nav-label"></div>
+      <div class="nav-btns">
+        <button class="nav-btn" id="prev-btn" onclick="navigate(-1)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>Previous
+        </button>
+        <button class="nav-btn today-btn" onclick="goToToday()">Today</button>
+        <button class="nav-btn" id="next-btn" onclick="navigate(1)">Next
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
     </div>
+    <div id="weeks"></div>
+    <div class="legend">
+      <div class="leg"><div class="leg-dot" style="background:var(--green)"></div> paid 🪙</div>
+      <div class="leg"><div class="leg-dot" style="background:#fca5a5"></div> not paid</div>
+      <div class="leg"><div class="leg-dot" style="background:#fcd34d"></div> upcoming</div>
+      <div class="leg"><div class="leg-dot" style="background:#e5e7eb"></div> free</div>
+    </div>
+    <a class="book-footer" href="https://playtomic.com/clubs/nexo-padel" target="_blank">
+      <div><div class="bfl-label">Book your court</div><div class="bfl-name">Nexo Padel on Playtomic</div></div>
+      <div class="book-footer-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="#0f6e4e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+    </a>
   </div>
 
-  <div id="weeks"></div>
-
-  <div class="legend">
-    <div class="leg"><div class="leg-dot" style="background:var(--green);"></div> paid</div>
-    <div class="leg"><div class="leg-dot" style="background:#fca5a5;"></div> not paid</div>
-    <div class="leg"><div class="leg-dot" style="background:#fcd34d;"></div> upcoming</div>
-    <div class="leg"><div class="leg-dot" style="background:#e5e7eb;"></div> free week</div>
+  <!-- LEADERBOARD -->
+  <div class="tab-content" id="tab-leaderboard">
+    <div class="lb-section-label">All-time rankings</div>
+    <div class="lb-card" id="lb-table"></div>
   </div>
 
+  <!-- LOG RESULTS -->
+  <div class="tab-content" id="tab-log">
+    <div class="auth-card" id="log-card"></div>
+  </div>
 
-
-  <a class="book-footer" href="https://playtomic.com/clubs/nexo-padel" target="_blank">
-    <div>
-      <div class="bfl-label">Book your court</div>
-      <div class="bfl-name">Nexo Padel on Playtomic</div>
-    </div>
-    <div class="book-footer-arrow">
-      <svg viewBox="0 0 24 24" fill="none" stroke="#0f6e4e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-    </div>
-  </a>
 </div>
 
-<!-- Tap modal -->
+<!-- Payment modal -->
 <div class="modal-overlay hidden" id="modal" onclick="closeModal(event)">
   <div class="modal">
     <div class="modal-name" id="modal-name"></div>
     <div class="modal-week" id="modal-week"></div>
     <div class="modal-btns">
-      <button class="modal-btn modal-btn-paid" onclick="setStatus_paid()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-        Mark as paid
-      </button>
+      <button class="modal-btn modal-btn-paid" onclick="setStatus_paid()">🪙 Mark as paid</button>
       <button class="modal-btn modal-btn-unpaid" onclick="setStatus_unpaid()">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
         Mark as not paid
@@ -201,9 +236,10 @@ const TOTAL=52, PAGE=5;
 const allPlayers=['Shane','Muhsin','Gits','Hassy','Ikyan','Peanut'];
 const anchors=['Shane','Peanut'];
 const MAIN_BOOKER='Shane';
+const ADMIN='Shane';
 
+/* ── Schedule ── */
 function debt(p){return p.played-p.paid;}
-
 function pickPayers(state){
   const aPool=[...state].filter(p=>anchors.includes(p.name)).sort((a,b)=>{
     const aB=a.consecutive>=2,bB=b.consecutive>=2;
@@ -220,7 +256,6 @@ function pickPayers(state){
     payers=[MAIN_BOOKER,...payers.filter(p=>p!==MAIN_BOOKER)];
   return payers;
 }
-
 function buildSchedule(){
   const state=[
     {name:'Shane', played:2,paid:2,lastPaid:1,consecutive:0},
@@ -240,168 +275,352 @@ function buildSchedule(){
   }
   return s;
 }
-
 const schedule=buildSchedule();
 
 function weekDate(i){
   const d=new Date('2026-04-14');d.setDate(d.getDate()+i*7);
-  return{
-    short:d.toLocaleDateString('en-GB',{day:'numeric',month:'short'}),
-    dow:d.toLocaleDateString('en-GB',{weekday:'short'}),
-    start:new Date(d),
-    end:new Date(d.getTime()+7*86400000),
-  };
+  return{short:d.toLocaleDateString('en-GB',{day:'numeric',month:'short'}),dow:d.toLocaleDateString('en-GB',{weekday:'short'}),start:new Date(d),end:new Date(d.getTime()+7*86400000)};
 }
-
 function getCurrentWeekIndex(){
   const t=new Date();
-  for(let i=0;i<TOTAL;i++){const{start,end}=weekDate(i);if(t>=start&&t<end)return i;}
+  for(let i=0;i<TOTAL;i++){
+    const{start,end}=weekDate(i);
+    const wed=new Date(start);wed.setDate(start.getDate()-6);
+    if(t>=wed&&t<end)return i;
+  }
   return 0;
 }
 
+/* ── Tabs ── */
 let currentPage=Math.floor(getCurrentWeekIndex()/PAGE);
 function navigate(dir){const max=Math.floor((TOTAL-1)/PAGE);currentPage=Math.max(0,Math.min(max,currentPage+dir));renderWeeks();}
 function goToToday(){currentPage=Math.floor(getCurrentWeekIndex()/PAGE);renderWeeks();}
-
-const BIN_ID='69d8bd4336566621a89a0d46';
-const API_KEY='$2a$10$wFLqnPrg2qRxOT2SAFps1OCHKfAajD9qY/N1bOgaiIP.qTzMCgVbC';
-let paidData={};
-
-function setSyncStatus(msg,color){
-  document.getElementById('sync-status').innerHTML=`<span class="status-dot" style="background:${color};"></span>${msg}`;
+function switchTab(tab){
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',['rota','leaderboard','log'][i]===tab));
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  if(tab==='leaderboard')renderLeaderboard();
+  if(tab==='log')renderLogTab();
 }
 
-async function fetchPaidData(){
-  setSyncStatus('Syncing...','#f5a623');
+/* ── Data ── */
+const BIN_ID='69d8bd4336566621a89a0d46';
+const API_KEY='$2a$10$wFLqnPrg2qRxOT2SAFps1OCHKfAajD9qY/N1bOgaiIP.qTzMCgVbC';
+let paidData={}, statsData={};
+
+async function fetchData(){
   try{
     const res=await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`,{headers:{'X-Master-Key':API_KEY}});
     const json=await res.json();
-    paidData=json.record||{};
+    const rec=json.record||{};
+    paidData=rec.paid||{};
+    statsData=rec.stats||{};
     renderWeeks();
-    setSyncStatus('Live · tap a name to update payment status','#1a9e6e');
-  }catch(e){setSyncStatus('Could not sync — showing offline','#e53e3e');renderWeeks();}
+  }catch(e){renderWeeks();}
 }
-
-async function savePaidData(){
-  setSyncStatus('Saving...','#f5a623');
+async function saveData(){
   try{
     await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`,{
       method:'PUT',
       headers:{'Content-Type':'application/json','X-Master-Key':API_KEY},
-      body:JSON.stringify(paidData),
+      body:JSON.stringify({paid:paidData,stats:statsData}),
     });
-    setSyncStatus('Saved · everyone can see this','#1a9e6e');
-  }catch(e){setSyncStatus('Save failed — try again','#e53e3e');}
+  }catch(e){}
 }
 
-// Modal state
-let modalWeekKey='', modalName='', modalWeekLabel='';
+/* ── Auth ── */
+// Each player's PIN stored as: padel_pin_Shane = "1234"
+// Current logged-in user: padel_user
+// Session authenticated flag (in-memory only)
+let sessionUser = '';  // authenticated this session
 
-function openModal(weekKey, name, weekLabel){
-  modalWeekKey=weekKey; modalName=name; modalWeekLabel=weekLabel;
-  document.getElementById('modal-name').textContent=name;
-  document.getElementById('modal-week').textContent=weekLabel;
-  document.getElementById('modal').classList.remove('hidden');
+function getStoredPin(name){ return localStorage.getItem('padel_pin_'+name)||''; }
+function setStoredPin(name,pin){ localStorage.setItem('padel_pin_'+name,pin); }
+function getStoredUser(){ return localStorage.getItem('padel_user')||''; }
+function setStoredUser(name){ localStorage.setItem('padel_user',name); }
+
+/* ── PIN pad state ── */
+let pinBuffer='';
+let pinMode=''; // 'setup1' | 'setup2' | 'auth'
+let pinSetup1='';
+let pinTarget=''; // player name being set up / authenticated
+
+function renderLogTab(){
+  const storedUser=getStoredUser();
+  const card=document.getElementById('log-card');
+
+  // Already authenticated this session
+  if(sessionUser){
+    renderLogForm(card);
+    return;
+  }
+
+  // No user chosen yet
+  if(!storedUser){
+    renderPlayerPicker(card);
+    return;
+  }
+
+  // User chosen, check if PIN set
+  const pin=getStoredPin(storedUser);
+  if(!pin){
+    pinTarget=storedUser;
+    pinMode='setup1';
+    pinBuffer='';
+    renderPinPad(card,`Hi ${storedUser}! Set your PIN`,'Choose a 4-digit PIN to secure your account.',false);
+    return;
+  }
+
+  // PIN set — show login
+  pinTarget=storedUser;
+  pinMode='auth';
+  pinBuffer='';
+  renderPinPad(card,`Welcome back, ${storedUser}`,'Enter your PIN or use Face ID / Touch ID.',true);
 }
 
-function closeModal(e){
-  if(!e||e.target===document.getElementById('modal'))
-    document.getElementById('modal').classList.add('hidden');
+function renderPlayerPicker(card){
+  card.innerHTML=`
+    <div class="auth-title">Who are you?</div>
+    <div class="auth-sub">You'll only need to do this once on this device.</div>
+    ${allPlayers.map(n=>`<button class="player-btn" onclick="choosePlayer('${n}')">${n}</button>`).join('')}`;
 }
 
-function setStatus_paid(){
-  if(!paidData[modalWeekKey])paidData[modalWeekKey]={};
-  paidData[modalWeekKey][modalName]=true;
-  document.getElementById('modal').classList.add('hidden');
-  renderWeeks(); savePaidData();
+function choosePlayer(name){
+  setStoredUser(name);
+  renderLogTab();
 }
 
-function setStatus_unpaid(){
-  if(!paidData[modalWeekKey])paidData[modalWeekKey]={};
-  paidData[modalWeekKey][modalName]=false;
-  document.getElementById('modal').classList.add('hidden');
-  renderWeeks(); savePaidData();
+function renderPinPad(card, title, subtitle, showBiometric){
+  card.innerHTML=`
+    <div class="auth-title">${title}</div>
+    <div class="auth-sub">${subtitle}</div>
+    <div class="pin-dots" id="pin-dots">
+      <div class="pin-dot" id="d0"></div>
+      <div class="pin-dot" id="d1"></div>
+      <div class="pin-dot" id="d2"></div>
+      <div class="pin-dot" id="d3"></div>
+    </div>
+    ${showBiometric?`<button class="biometric-btn" onclick="tryBiometric()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M8 12c0-2.21 1.79-4 4-4s4 1.79 4 4-1.79 4-4 4-4-1.79-4-4z"/><path d="M12 8v1M12 15v1M8 12H7M17 12h-1"/></svg>
+      Use Face ID / Touch ID
+    </button>`:''}
+    <div class="numpad">
+      ${[1,2,3,4,5,6,7,8,9,'','0','⌫'].map(k=>`
+        <button class="num-btn${k===''?' empty':k==='⌫'?' del':''}" onclick="numPress('${k}')">${k}</button>
+      `).join('')}
+    </div>
+    <div class="auth-error" id="auth-error"></div>
+    <div class="switch-link" onclick="switchUser()">Not ${getStoredUser()}? Switch account</div>`;
 }
 
+function updateDots(){
+  for(let i=0;i<4;i++){
+    const d=document.getElementById('d'+i);
+    if(d) d.classList.toggle('filled',i<pinBuffer.length);
+  }
+}
+
+function numPress(k){
+  if(k==='')return;
+  if(k==='⌫'){pinBuffer=pinBuffer.slice(0,-1);updateDots();return;}
+  if(pinBuffer.length>=4)return;
+  pinBuffer+=k;
+  updateDots();
+  if(pinBuffer.length===4) setTimeout(processPin,150);
+}
+
+function processPin(){
+  const err=document.getElementById('auth-error');
+  if(pinMode==='setup1'){
+    pinSetup1=pinBuffer;
+    pinBuffer='';
+    pinMode='setup2';
+    const card=document.getElementById('log-card');
+    renderPinPad(card,'Confirm your PIN','Re-enter your PIN to confirm.',false);
+    return;
+  }
+  if(pinMode==='setup2'){
+    if(pinBuffer!==pinSetup1){
+      if(err)err.textContent="PINs don't match — try again";
+      pinBuffer='';updateDots();
+      return;
+    }
+    setStoredPin(pinTarget,pinBuffer);
+    sessionUser=pinTarget;
+    renderLogForm(document.getElementById('log-card'));
+    return;
+  }
+  if(pinMode==='auth'){
+    const stored=getStoredPin(pinTarget);
+    if(pinBuffer===stored){
+      sessionUser=pinTarget;
+      renderLogForm(document.getElementById('log-card'));
+    } else {
+      if(err)err.textContent='Incorrect PIN — try again';
+      pinBuffer='';updateDots();
+    }
+  }
+}
+
+async function tryBiometric(){
+  try{
+    if(!window.PublicKeyCredential){ alert('Biometrics not supported on this browser.'); return; }
+    const available=await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
+    if(!available){ alert('No Face ID / Touch ID found on this device.'); return; }
+    // Use a simple challenge via WebAuthn get — if user verifies, we trust them
+    const challenge=new Uint8Array(32);crypto.getRandomValues(challenge);
+    const credId=localStorage.getItem('padel_cred_'+pinTarget);
+    if(!credId){ await registerBiometric(); return; }
+    const assertion=await navigator.credentials.get({
+      publicKey:{
+        challenge,
+        timeout:60000,
+        userVerification:'required',
+        allowCredentials:[{id:base64ToUint8(credId),type:'public-key'}],
+      }
+    });
+    if(assertion){ sessionUser=pinTarget; renderLogForm(document.getElementById('log-card')); }
+  }catch(e){
+    if(e.name!=='NotAllowedError') alert('Biometric failed: '+e.message);
+  }
+}
+
+async function registerBiometric(){
+  try{
+    const challenge=new Uint8Array(32);crypto.getRandomValues(challenge);
+    const userId=new Uint8Array(16);crypto.getRandomValues(userId);
+    const cred=await navigator.credentials.create({
+      publicKey:{
+        challenge,
+        rp:{name:'Padel Rota',id:location.hostname},
+        user:{id:userId,name:pinTarget,displayName:pinTarget},
+        pubKeyCredParams:[{alg:-7,type:'public-key'}],
+        authenticatorSelection:{authenticatorAttachment:'platform',userVerification:'required'},
+        timeout:60000,
+      }
+    });
+    localStorage.setItem('padel_cred_'+pinTarget, uint8ToBase64(new Uint8Array(cred.rawId)));
+    sessionUser=pinTarget;
+    renderLogForm(document.getElementById('log-card'));
+  }catch(e){
+    if(e.name!=='NotAllowedError') alert('Could not register biometric: '+e.message);
+  }
+}
+
+function uint8ToBase64(u8){return btoa(String.fromCharCode(...u8));}
+function base64ToUint8(b64){return Uint8Array.from(atob(b64),c=>c.charCodeAt(0));}
+
+function switchUser(){
+  sessionUser='';
+  localStorage.removeItem('padel_user');
+  renderLogTab();
+}
+
+/* ── Log form ── */
+function renderLogForm(card){
+  const playersToLog=sessionUser===ADMIN?allPlayers:[sessionUser];
+  card.innerHTML=`
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+      <div style="font-size:13px;color:var(--text-muted);">Logged in as <b style="color:var(--text);">${sessionUser}</b></div>
+      <button onclick="signOut()" style="font-size:12px;font-weight:600;color:var(--text-muted);background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;">Sign out</button>
+    </div>
+    <div class="auth-title" style="margin-bottom:14px;">Log results</div>
+    ${playersToLog.map(name=>`
+      <div class="log-player-row">
+        <div class="log-player-name">${name}</div>
+        <div class="log-inputs">
+          <div class="log-input-wrap"><div class="log-input-label">Wins</div><input class="log-input" type="number" min="0" value="0" id="wins-${name}" inputmode="numeric"/></div>
+          <div class="log-input-wrap"><div class="log-input-label">Losses</div><input class="log-input" type="number" min="0" value="0" id="losses-${name}" inputmode="numeric"/></div>
+        </div>
+      </div>`).join('')}
+    <button class="action-btn" onclick="saveResults()">Save results</button>
+    <div class="success-msg" id="log-success">Results saved! 🎾</div>`;
+}
+
+function signOut(){
+  sessionUser='';
+  pinBuffer='';
+  renderLogTab();
+}
+
+function saveResults(){
+  const playersToLog=sessionUser===ADMIN?allPlayers:[sessionUser];
+  playersToLog.forEach(name=>{
+    const w=parseInt(document.getElementById('wins-'+name)?.value)||0;
+    const l=parseInt(document.getElementById('losses-'+name)?.value)||0;
+    if(!statsData[name])statsData[name]={wins:0,losses:0};
+    statsData[name].wins+=w;
+    statsData[name].losses+=l;
+  });
+  saveData();
+  const s=document.getElementById('log-success');
+  if(s){s.style.display='block';setTimeout(()=>{s.style.display='none';renderLogForm(document.getElementById('log-card'));},2500);}
+}
+
+/* ── Leaderboard ── */
+function renderLeaderboard(){
+  const t=document.getElementById('lb-table');t.innerHTML='';
+  const ranked=allPlayers.map(name=>{
+    const s=statsData[name]||{wins:0,losses:0};
+    const total=s.wins+s.losses;
+    return{name,wins:s.wins,losses:s.losses,total,ratio:total>0?Math.round(s.wins/total*100):0};
+  }).sort((a,b)=>b.wins-a.wins||b.ratio-a.ratio);
+  const maxW=ranked[0]?.wins||1;
+  ranked.forEach((p,i)=>{
+    const rc=i===0?'gold':i===1?'silver':i===2?'bronze':'';
+    const medal=i===0?'🥇':i===1?'🥈':i===2?'🥉':'';
+    const pct=Math.round(p.wins/Math.max(maxW,1)*100);
+    const row=document.createElement('div');
+    row.innerHTML=`<div class="lb-row"><div class="lb-rank ${rc}">${medal||i+1}</div><div class="lb-name">${p.name}</div><div class="lb-stats"><div class="lb-ratio">${p.ratio}%</div><div class="lb-detail">${p.wins}W · ${p.losses}L · ${p.total} played</div></div></div><div class="lb-bar-wrap"><div class="lb-bar" style="width:${pct}%"></div></div>`;
+    t.appendChild(row);
+  });
+}
+
+/* ── Rota render ── */
 function renderWeeks(){
-  const el=document.getElementById('weeks');
-  el.innerHTML='';
+  const el=document.getElementById('weeks');el.innerHTML='';
   const today=new Date();
   const max=Math.floor((TOTAL-1)/PAGE);
-  const startIdx=currentPage*PAGE;
-  const endIdx=Math.min(startIdx+PAGE,TOTAL);
-
+  const si=currentPage*PAGE,ei=Math.min(si+PAGE,TOTAL);
   document.getElementById('prev-btn').disabled=currentPage===0;
   document.getElementById('next-btn').disabled=currentPage===max;
-  document.getElementById('nav-label').textContent=
-    `Weeks ${startIdx+1}–${endIdx} · ${weekDate(startIdx).short} → ${weekDate(endIdx-1).short}`;
-
-  for(let i=startIdx;i<endIdx;i++){
-    const payers=schedule[i];
-    const free=allPlayers.filter(p=>!payers.includes(p));
+  document.getElementById('nav-label').textContent=`Weeks ${si+1}–${ei} · ${weekDate(si).short} → ${weekDate(ei-1).short}`;
+  for(let i=si;i<ei;i++){
+    const payers=schedule[i],free=allPlayers.filter(p=>!payers.includes(p));
     const{short,dow,start:ws,end:we}=weekDate(i);
-    const isNow=today>=ws&&today<we;
-    const isPast=today>=we;
-    const weekTuesday=new Date(ws);weekTuesday.setDate(ws.getDate()+1);
-    const sixDaysBefore=new Date(weekTuesday);sixDaysBefore.setDate(weekTuesday.getDate()-6);
-    const isActiveWeek=today>=sixDaysBefore&&today<we;
-    const weekKey=`week_${i}`;
-    const weekPaid=paidData[weekKey]||{};
-    const weekLabel=`Week ${i+1} · ${dow} ${short}`;
-
+    const wed=new Date(ws);wed.setDate(ws.getDate()-6);
+    const isNow=today>=wed&&today<we,isPast=today>=we,isActive=isNow;
+    const wk=`week_${i}`,wp=paidData[wk]||{},wl=`Week ${i+1} · ${dow} ${short}`;
     const card=document.createElement('div');
     card.className='week-card'+(isNow?' this-week':'')+(isPast?' past':'');
-
     const payChips=payers.map(name=>{
-      const isBooker=name===payers[0];
-      const hasPaid=weekPaid[name]===true;
-      const hasNotPaid=weekPaid[name]===false;
-      let cls, label;
-      if(isActiveWeek||isPast){
-        // Show paid/unpaid status
-        cls=hasPaid?'chip-paid':'chip-unpaid';
-        label=hasPaid?`${name} ✓`:name;
-      } else {
-        // Future week — just show as upcoming
-        cls='chip-future';
-        label=name;
-      }
-      const bookerClass=isBooker?' booker':'';
-      const tap=isActiveWeek;
-      return `<span class="chip ${cls}${bookerClass}${tap?' tappable':''}"${tap?` onclick="openModal('${weekKey}','${name}','${weekLabel}')"`:''}>${label}</span>`;
+      const isBooker=name===payers[0],hasPaid=wp[name]===true;
+      let cls,label;
+      if(isActive||isPast){cls=hasPaid?'chip-paid':'chip-unpaid';label=hasPaid?`${name} 🪙`:name;}
+      else{cls='chip-future';label=name;}
+      const bc=isBooker?' booker':'',tap=isActive&&(sessionUser===ADMIN||sessionUser===name);
+      return `<span class="chip ${cls}${bc}${tap?' tappable':''}"${tap?` onclick="openModal('${wk}','${name}','${wl}')"`:''}>${label}</span>`;
     }).join('');
-
     const freeChips=free.map(p=>`<span class="chip chip-free">${p}</span>`).join('');
-    const paidCount=payers.filter(p=>weekPaid[p]===true).length;
-    const progress=(isActiveWeek||isPast)?`<div class="pay-progress"><b>${paidCount}/${payers.length}</b> paid</div>`:'';
+    const pc=payers.filter(p=>wp[p]===true).length;
+    const prog=(isActive||isPast)?`<div class="pay-progress"><b>${pc}/${payers.length}</b> paid</div>`:'';
     const badge=isNow?'<span class="badge badge-now">This week</span>':isPast?'<span class="badge badge-past">Done</span>':'<span class="badge badge-future">Upcoming</span>';
-
-    card.innerHTML=`
-      <div class="week-inner">
-        <div class="week-left">
-          <div class="week-number">${String(i+1).padStart(2,'0')}</div>
-          <div class="week-date-str">${dow}<br>${short}</div>
-        </div>
-        <div class="week-middle">
-          ${badge}
-          <div class="players-row"><span class="row-label">Pay</span>${payChips}</div>
-          ${progress}
-          <div class="players-row"><span class="row-label">Free</span>${freeChips}</div>
-        </div>
-        <a class="week-right" href="https://playtomic.com/clubs/nexo-padel" target="_blank">
-          <div class="week-right-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </div>
-          <div class="week-right-label">Book</div>
-        </a>
-      </div>`;
+    card.innerHTML=`<div class="week-inner"><div class="week-left"><div class="week-number">${String(i+1).padStart(2,'0')}</div><div class="week-date-str">${dow}<br>${short}</div></div><div class="week-middle">${badge}<div class="players-row"><span class="row-label">Pay</span>${payChips}</div>${prog}<div class="players-row"><span class="row-label">Free</span>${freeChips}</div></div><a class="week-right" href="https://playtomic.com/clubs/nexo-padel" target="_blank"><div class="week-right-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div><div class="week-right-label">Book</div></a></div>`;
     el.appendChild(card);
   }
 }
 
+/* ── Payment modal ── */
+let modalWeekKey='',modalName='',modalWeekLabel='';
+function openModal(wk,name,label){modalWeekKey=wk;modalName=name;modalWeekLabel=label;document.getElementById('modal-name').textContent=name;document.getElementById('modal-week').textContent=label;document.getElementById('modal').classList.remove('hidden');}
+function closeModal(e){if(!e||e.target===document.getElementById('modal'))document.getElementById('modal').classList.add('hidden');}
+function setStatus_paid(){if(!paidData[modalWeekKey])paidData[modalWeekKey]={};paidData[modalWeekKey][modalName]=true;document.getElementById('modal').classList.add('hidden');renderWeeks();saveData();}
+function setStatus_unpaid(){if(!paidData[modalWeekKey])paidData[modalWeekKey]={};paidData[modalWeekKey][modalName]=false;document.getElementById('modal').classList.add('hidden');renderWeeks();saveData();}
+
+/* ── Init ── */
 renderWeeks();
-fetchPaidData();
-setInterval(fetchPaidData, 30000);
+fetchData();
+setInterval(fetchData,30000);
 </script>
 </body>
 </html>
